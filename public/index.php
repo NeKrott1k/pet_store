@@ -2,6 +2,8 @@
 
 session_start();
 
+include_once __DIR__ . "/../src/config/database.php";
+
 //получение url ()
 $url = trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH), "/");
 
@@ -21,8 +23,11 @@ $routes = [
     'cart'   => ['file' => 'src/pages/cart.php', 'title' => 'Корзина', 'show_footer' => true, 'roles' => ['user', 'admin', 'manager']],
     'admin'  => ['file' => 'src/pages/admin.php', 'title' => 'Админка', 'roles' => ['admin']],
     'orders' => ['file' => 'src/pages/orders.php', 'title' => 'Заказы', 'roles' => ['admin', 'manager']],
-    'login'  => ['file' => 'src/pages/login.php', 'title' => 'Вход', 'roles' => []],
-    'not-found'  => ['file' => 'src/pages/not-found.php', 'title' => 'Вход', 'roles' => []],
+    'logout'  => ['file' => 'src/pages/auth/logout.php', 'title' => 'Выход', 'roles' => []],
+    'login'  => ['file' => 'src/pages/auth/login.php', 'title' => 'Вход', 'roles' => []],
+    'register'  => ['file' => 'src/pages/auth/register.php', 'title' => 'Регистрация', 'roles' => []],
+    'verify-code'  => ['file' => 'src/pages/auth/verify-code.php', 'title' => 'Регистрация', 'roles' => []],
+    'not-found'  => ['file' => 'src/pages/not-found.php', 'title' => 'not-found', 'roles' => []],
 ];
 
 //проверяем url на динамический маршрут через регулярное выражение
