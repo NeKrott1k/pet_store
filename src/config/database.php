@@ -1,2 +1,2 @@
 <?php
-$connect = new mysqli("mysql.des1gner.myjino.ru", "046253047_ptstr", '4SxSqVj$vuwQ', "des1gner_pet-store");
+$connect = new mysqli($_ENV["DB_HOST"], $_ENV["DB_USER"], $_ENV["DB_PASS"], $_ENV["DB_NAME"]);

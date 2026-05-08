@@ -1,7 +1,5 @@
 <?php
 $from = $_SESSION["verify_from"] ?? '';
-// unset($_SESSION["verify_from"]);
-print_r($_SESSION);
 
 if(!in_array($from, ["register", "login"])){
     header("Location: /");

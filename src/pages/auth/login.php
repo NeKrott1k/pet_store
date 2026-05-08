@@ -66,14 +66,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'timgizzat@gmail.com';
-        $mail->Password   = 'nvdz ouhi sfqj jwvu';
+        $mail->Username   = $_ENV["MAIL_USERNAME"];
+        $mail->Password   = $_ENV["MAIL_PASSWORD"];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet    = 'UTF-8';
 
         // Отправитель
-        $mail->setFrom('timgizzat@gmail.com', 'Тимур');
+        $mail->setFrom($_ENV["MAIL_FROM_ADDRESS"], $_ENV["MAIL_FROM_NAME"]);
 
         // Получатель
         $mail->addAddress($email, $user["name"]);
