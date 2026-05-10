@@ -48,6 +48,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
         header("Location: /login");
         exit();
     }
+    
+    if(in_array($user["role"], ["admin", "manager"])){
+        $_SESSION["user_id"] = $user["id"];
+        $_SESSION["user_role"] = $user["role"];
+        $_SESSION["user_avatar"] = $user["avatar"];
+        header("Location: /");
+        exit;
+    }
 
 
     //отправка письма
@@ -100,9 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
         header("Location: /register");
         exit();
     }
-
-
-    
 }
 
 
@@ -129,7 +134,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["verify_code"])) {
     $_SESSION["user_avatar"] = $_SESSION["pending_user"]["avatar"];
     unset(
         $_SESSION["pending_user"],
-        $_SESSION["email_code"]
+        $_SESSION["email_code"],
+        $_SESSION["verify_from"],
     );
     header("Location: /");
     exit;

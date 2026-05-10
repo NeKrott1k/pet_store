@@ -138,7 +138,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["verify_code"])) {
     $stmt->execute();
     unset(
         $_SESSION["pending_registration"],
-        $_SESSION["email_code"]
+        $_SESSION["email_code"],
+        $_SESSION["verify_from"],
     );
     header("Location: /login");
     exit;
