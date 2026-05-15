@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
     if(in_array($user["role"], ["admin", "manager"])){
         $_SESSION["user_id"] = $user["id"];
         $_SESSION["user_role"] = $user["role"];
-        $_SESSION["user_avatar"] = $user["avatar"];
+        $_SESSION["user_avatar"] = $user["img"];
         header("Location: /");
         exit;
     }
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
     //отправка письма
     $_SESSION["pending_user"]=[
         "id" => $user["id"],
-        "avatar" => $user["avatar"],
+        "img" => $user["img"],
         "role" => $user["role"]
     ];
     $code = rand(100000, 999999);
@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
             "password" => $password,
             "email" => $email
         ];
-        header("Location: /register");
+        header("Location: /login");
         exit();
     }
 }
@@ -131,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["verify_code"])) {
 
     $_SESSION["user_id"] = $_SESSION["pending_user"]["id"];
     $_SESSION["user_role"] = $_SESSION["pending_user"]["role"];
-    $_SESSION["user_avatar"] = $_SESSION["pending_user"]["avatar"];
+    $_SESSION["user_avatar"] = $_SESSION["pending_user"]["img"];
     unset(
         $_SESSION["pending_user"],
         $_SESSION["email_code"],
