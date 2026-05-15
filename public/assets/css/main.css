@@ -6,6 +6,7 @@
 @import "./components/_header.css";
 
 @import "./pages/_about.css";
+@import "./pages/_main.css";
 @import "./pages/_admin.css";
 @import "./pages/_auth.css";
 @import "./pages/_brands.css";

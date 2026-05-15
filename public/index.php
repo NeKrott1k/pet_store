@@ -24,7 +24,7 @@ $entity_map = [
 $routes = [
     ''       => ['file' => 'src/pages/catalog.php', 'title' => 'Главная', 'show_footer' => true, 'roles' => []],
     'cart'   => ['file' => 'src/pages/cart.php', 'title' => 'Корзина', 'show_footer' => true, 'roles' => ['user', 'admin', 'manager']],
-    'admin'  => ['file' => 'src/pages/admin.php', 'title' => 'Админка', 'roles' => ['admin']],
+    'admin'  => ['file' => 'src/pages/admin/index.php', 'title' => 'Админка', 'roles' => ['admin']],
     'orders' => ['file' => 'src/pages/orders.php', 'title' => 'Заказы', 'roles' => ['admin', 'manager']],
     'logout'  => ['file' => 'src/pages/auth/logout.php', 'title' => 'Выход', 'roles' => []],
     'login'  => ['file' => 'src/pages/auth/login.php', 'title' => 'Вход', 'roles' => []],
@@ -51,6 +51,14 @@ if (!$file && array_key_exists($url, $routes)) {
     $title = $routes[$url]["title"] ?? "Bloop";
     $show_footer = $routes[$url]["show_footer"] ?? false;
 }
+
+
+//если url начинается с admin то загружаем файл с роутингом админ панели   
+if( $url == "admin" ||str_starts_with($url, "admin/")){
+    $file = "src/pages/admin/index.php";
+    $title = "Admin";
+}
+
 
 //если не статический маршрут, то перекидываем на страницу not-found
 if (!$file) {

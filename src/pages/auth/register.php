@@ -7,13 +7,16 @@ use PHPMailer\PHPMailer\Exception;
 $fields = [
     "name" => ["type" => "text"],
     "email" => ["type" => "text"],
+    "phone" => ["type" => "text"],
     "password" => ["type" => "password"],
     "confirm_password" => ["type" => "password"]
 ];
+$phone_pattern = "/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
     $error = [];
     $name = trim($_POST["name"]);
+    $phone = trim($_POST["phone"]);
     $email = trim($_POST["email"]);
     $password = trim($_POST["password"]);
     $confirm_password = trim($_POST["confirm_password"]);
@@ -35,6 +38,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
             $error["email"] = "Этот email уже зарегистрирован";
         }
     }
+    if (empty($phone)) {
+        $error["phone"] = "Заполните поле";
+    } else if (!preg_match($phone_pattern, $phone)) {
+        $error["phone"] = "Неверный формат телефона";
+    }
 
     if (empty($password)) {
         $error["password"] = "Заполните поле";
@@ -51,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
         $_SESSION["error"] = $error;
         $_SESSION["old_input"] = [
             "name" => $name,
+            "phone" => $phone,
             "email" => $email
         ];
         header("Location: /register");
@@ -63,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
     $_SESSION["email_code"] = $code;
     $_SESSION["pending_registration"] = [
         "name" => $name,
+        "phone" => $phone,
         "email" => $email,
         "password" => $password
     ];
@@ -108,9 +118,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
         header("Location: /register");
         exit();
     }
-
-
-    
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["verify_code"])) {
@@ -119,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["verify_code"])) {
 
     if (empty($user_code)) {
         $error["verify_code"] = "Введите код";
-    }else if ($user_code !== (string)$_SESSION["email_code"]) {
+    } else if ($user_code !== (string)$_SESSION["email_code"]) {
         $error["verify_code"] = "Код не совпадает";
     }
 
@@ -131,17 +138,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["verify_code"])) {
 
     $pending = $_SESSION["pending_registration"];
     $hashed_password = password_hash($pending["password"], PASSWORD_DEFAULT);
-    $avatar = './public/assets/images/asd.jpg';
+    $img = null;
 
-    $stmt = $connect->prepare("INSERT INTO users (name, email, password, avatar) VALUES (?,?,?,?)");
-    $stmt->bind_param("ssss", $pending["name"], $pending["email"], $hashed_password, $avatar);
+    $stmt = $connect->prepare("INSERT INTO users (name, email, phone, password, img) VALUES (?,?,?,?,?)");
+    $stmt->bind_param("sssss", $pending["name"], $pending["email"], $pending["phone"], $hashed_password, $img);
     $stmt->execute();
+    $_SESSION["user_id"] = $connect->insert_id;
+    $_SESSION["user_role"] = "user";
+    $_SESSION["user_avatar"] = null;
     unset(
         $_SESSION["pending_registration"],
         $_SESSION["email_code"],
         $_SESSION["verify_from"],
     );
-    header("Location: /login");
+    header("Location: /");
     exit;
 }
 
@@ -157,7 +167,7 @@ unset($_SESSION["old_input"]);
     <?php foreach ($fields as $field => $config): ?>
         <div>
             <label for=""><?= $field ?>:</label>
-            <input type="<?= $config["type"] ?>" value="<?= htmlspecialchars($old_input[$field] ?? "") ?>" id="" name="<?= $field ?>">
+            <input id="<?= $field ?>" type="<?= $config["type"] ?>" value="<?= htmlspecialchars($old_input[$field] ?? "") ?>" id="" name="<?= $field ?>">
             <?php
             if (isset($input_error[$field])):
             ?>
@@ -167,3 +177,14 @@ unset($_SESSION["old_input"]);
     <?php endforeach ?>
     <button type="submit">Регистрация</button>
 </form>
+<script src="https://unpkg.com/imask"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput) {
+            IMask(phoneInput, {
+                mask: '+{7} (000) 000-00-00'
+            });
+        }
+    });
+</script>
