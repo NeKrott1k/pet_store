@@ -1,6 +1,4 @@
 <?php
-echo $_GET["id"];
-echo $_GET["table"];
 
 $table = $_GET["table"];
 $id = $_GET["id"];

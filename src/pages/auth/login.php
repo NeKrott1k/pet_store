@@ -114,7 +114,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["verify_code"])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["verify_code"])) {
     $error = [];
-    echo($_POST["verify_code"]);
     $user_code = trim($_POST["verify_code"]);
 
     if (empty($user_code)) {

@@ -24,9 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }else if($remove_img != 1){
         $img = $result["img"];
     }
-    echo("remove_img".$remove_img);
-    echo("img".$img);
-    // exit;
 
     if (empty($img)) {
         $error["img"] = "Выберите файл";

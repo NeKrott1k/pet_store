@@ -25,7 +25,6 @@ $routes = [
     ''       => ['file' => 'src/pages/catalog.php', 'title' => 'Главная', 'show_footer' => true, 'roles' => []],
     'cart'   => ['file' => 'src/pages/cart.php', 'title' => 'Корзина', 'show_footer' => true, 'roles' => ['user', 'admin', 'manager']],
     'admin'  => ['file' => 'src/pages/admin/index.php', 'title' => 'Админка', 'roles' => ['admin']],
-    'admin/create'  => ['file' => 'src/pages/admin-create.php', 'title' => 'Админка', 'roles' => ['admin']],
     'orders' => ['file' => 'src/pages/orders.php', 'title' => 'Заказы', 'roles' => ['admin', 'manager']],
     'logout'  => ['file' => 'src/pages/auth/logout.php', 'title' => 'Выход', 'roles' => []],
     'login'  => ['file' => 'src/pages/auth/login.php', 'title' => 'Вход', 'roles' => []],
