@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+
+RewriteRule ^src/actions/ - [L]
+
+RewriteRule ^src/ - [F,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ public/index.php [L,QSA]  

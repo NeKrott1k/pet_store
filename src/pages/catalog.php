@@ -26,7 +26,7 @@ function product_badge(array $p): string {
             <div class="catalog-search__icon">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
             </div>
-            <input type="text" name="search" class="form-input" placeholder="Поиск по названию или бренду..." value="<?= htmlspecialchars($search) ?>">
+            <input type="text" name="search" class="form-input" placeholder="Поиск по названию или бренду..." value="<?= htmlspecialchars('') ?>">
         </div>
 
         <div class="catalog-layout">
@@ -42,7 +42,7 @@ function product_badge(array $p): string {
                     <select name="category" class="form-select" onchange="this.form.submit()">
                         <option value="0">Все категории</option>
                         <?php foreach ($categories as $cat): ?>
-                            <option value="<?= $cat['id'] ?>" <?= $cat_id === (int)$cat['id'] ? 'selected' : '' ?>><?= htmlspecialchars($cat['name']) ?></option>
+                            <option value="<?= $cat['id'] ?>" <?= $cat['id'] === (int)$cat['id'] ? 'selected' : '' ?>><?= htmlspecialchars($cat['name']) ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>
@@ -54,7 +54,7 @@ function product_badge(array $p): string {
                     <select name="brand" class="form-select" onchange="this.form.submit()">
                         <option value="0">Все бренды</option>
                         <?php foreach ($brands_list as $b): ?>
-                            <option value="<?= $b['id'] ?>" <?= $brand_id === (int)$b['id'] ? 'selected' : '' ?>><?= htmlspecialchars($b['name']) ?></option>
+                            <option value="<?= $b['id'] ?>" <?= $b['id'] === (int)$b['id'] ? 'selected' : '' ?>><?= htmlspecialchars($b['name']) ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>
@@ -63,19 +63,19 @@ function product_badge(array $p): string {
                 <div class="filters__group">
                     <p class="filters__label">Цена, ₽</p>
                     <div class="filters__price-row">
-                        <input type="number" name="price_from" class="form-input" placeholder="От" value="<?= $price_from ?: '' ?>" min="0">
+                        <input type="number" name="price_from" class="form-input" placeholder="От" value="<?= '' ?: '' ?>" min="0">
                         <span class="filters__price-sep">—</span>
-                        <input type="number" name="price_to" class="form-input" placeholder="До" value="<?= $price_to ?: '' ?>" min="0">
+                        <input type="number" name="price_to" class="form-input" placeholder="До" value="<?= '' ?: '' ?>" min="0">
                     </div>
                 </div>
 
                 <div class="filters__group">
                     <p class="filters__label">Сортировка</p>
                     <select name="sort" class="form-select" onchange="this.form.submit()">
-                        <option value="default" <?= $sort === 'default' ? 'selected' : '' ?>>По умолчанию</option>
-                        <option value="price_asc" <?= $sort === 'price_asc' ? 'selected' : '' ?>>Дешевле</option>
-                        <option value="price_desc" <?= $sort === 'price_desc' ? 'selected' : '' ?>>Дороже</option>
-                        <option value="new" <?= $sort === 'new' ? 'selected' : '' ?>>Новинки</option>
+                        <option value="default" <?= '' === 'default' ? 'selected' : '' ?>>По умолчанию</option>
+                        <option value="price_asc" <?= '' === 'price_asc' ? 'selected' : '' ?>>Дешевле</option>
+                        <option value="price_desc" <?= '' === 'price_desc' ? 'selected' : '' ?>>Дороже</option>
+                        <option value="new" <?= '' === 'new' ? 'selected' : '' ?>>Новинки</option>
                     </select>
                 </div>
 
@@ -86,7 +86,7 @@ function product_badge(array $p): string {
             </aside>
 
             <div>
-                <p class="catalog-count">Найдено товаров: <?= count($products) ?></p>
+                <p class="catalog-count">Найдено товаров: <?= 1 ?></p>
 
                 <?php if (empty($products)): ?>
                     <div class="catalog-empty">

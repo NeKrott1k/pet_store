@@ -22,12 +22,18 @@ $entity_map = [
 
 //статические пути
 $routes = [
-    ''       => ['file' => 'src/pages/catalog.php', 'title' => 'Главная', 'show_footer' => true, 'roles' => []],
-    'cart'   => ['file' => 'src/pages/cart.php', 'title' => 'Корзина', 'show_footer' => true, 'roles' => ['user', 'admin', 'manager']],
-    'admin'  => ['file' => 'src/pages/admin/index.php', 'title' => 'Админка', 'roles' => ['admin']],
+    '' => ['file' => 'src/pages/main.php', 'title' => 'Главная', 'show_footer' => true, 'roles' => []],
+    'catalog' => ['file' => 'src/pages/catalog.php', 'title' => 'catalog', 'show_footer' => true, 'roles' => []],
+    'promotions' => ['file' => 'src/pages/promotions.php', 'title' => 'promotions', 'show_footer' => true, 'roles' => []],
+    'new-products' => ['file' => 'src/pages/new-products.php', 'title' => 'new-products', 'show_footer' => true, 'roles' => []],
+    'brands' => ['file' => 'src/pages/brands.php', 'title' => 'brands', 'show_footer' => true, 'roles' => []],
+    'reviews' => ['file' => 'src/pages/reviews.php', 'title' => 'reviews', 'show_footer' => true, 'roles' => []],
+    'contacts' => ['file' => 'src/pages/contacts.php', 'title' => 'contacts', 'show_footer' => true, 'roles' => []],
+    'cart' => ['file' => 'src/pages/cart.php', 'title' => 'Корзина', 'show_footer' => true, 'roles' => ['user', 'admin', 'manager']],
+    'admin' => ['file' => 'src/pages/admin/index.php', 'title' => 'Админка', 'roles' => ['admin']],
     'orders' => ['file' => 'src/pages/orders.php', 'title' => 'Заказы', 'roles' => ['admin', 'manager']],
-    'logout'  => ['file' => 'src/pages/auth/logout.php', 'title' => 'Выход', 'roles' => []],
-    'login'  => ['file' => 'src/pages/auth/login.php', 'title' => 'Вход', 'roles' => []],
+    'logout' => ['file' => 'src/pages/auth/logout.php', 'title' => 'Выход', 'roles' => []],
+    'login' => ['file' => 'src/pages/auth/login.php', 'title' => 'Вход', 'roles' => []],
     'register'  => ['file' => 'src/pages/auth/register.php', 'title' => 'Регистрация', 'roles' => []],
     'verify-code'  => ['file' => 'src/pages/auth/verify-code.php', 'title' => 'Регистрация', 'roles' => []],
     'not-found'  => ['file' => 'src/pages/not-found.php', 'title' => 'not-found', 'roles' => []],
@@ -44,6 +50,7 @@ foreach ($entity_map as $route) {
         break;
     }
 }
+
 
 //если не динамический маршрут, то проверяем на статический
 if (!$file && array_key_exists($url, $routes)) {
@@ -66,6 +73,7 @@ if (!$file) {
     exit;
 }
 
+
 if ($url == "not-found") {
     http_response_code(404);
 }
@@ -74,6 +82,7 @@ ob_start();
 
 require_once __DIR__ . "/../" . $file;
 $page_content = ob_get_clean();
+
 
 ?>
 <!DOCTYPE html>

@@ -3,13 +3,13 @@
         <a href="/" class="header__logo">Bloop</a>
 
         <nav class="header__nav">
-            <a href="/" class="<?= $current_url === '' ? 'active' : '' ?>">О магазине</a>
-            <a href="/catalog" class="<?= $current_url === 'catalog' ? 'active' : '' ?>">Каталог</a>
-            <a href="/promotions" class="<?= $current_url === 'promotions' ? 'active' : '' ?>">Акции</a>
-            <a href="/new-products" class="<?= $current_url === 'new-products' ? 'active' : '' ?>">Новинки</a>
-            <a href="/brands" class="<?= $current_url === 'brands' ? 'active' : '' ?>">Бренды</a>
-            <a href="/reviews" class="<?= $current_url === 'reviews' ? 'active' : '' ?>">Отзывы</a>
-            <a href="/contacts" class="<?= $current_url === 'contacts' ? 'active' : '' ?>">Контакты</a>
+            <a href="/" class="<?= $url === '' ? 'active' : '' ?>">О магазине</a>
+            <a href="/catalog" class="<?= $url === 'catalog' ? 'active' : '' ?>">Каталог</a>
+            <a href="/promotions" class="<?= $url === 'promotions' ? 'active' : '' ?>">Акции</a>
+            <a href="/new-products" class="<?= $url === 'new-products' ? 'active' : '' ?>">Новинки</a>
+            <a href="/brands" class="<?= $url === 'brands' ? 'active' : '' ?>">Бренды</a>
+            <a href="/reviews" class="<?= $url === 'reviews' ? 'active' : '' ?>">Отзывы</a>
+            <a href="/contacts" class="<?= $url === 'contacts' ? 'active' : '' ?>">Контакты</a>
         </nav>
 
         <div class="header__actions">
@@ -23,7 +23,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
                 </svg>
-                <?php if ($cart_count > 0): ?>
+                <?php if (isset($_SESSION["user_id"]) && $cart_count > 0): ?>
                     <span class="header__cart-badge"><?= $cart_count ?></span>
                 <?php endif ?>
             </a>
