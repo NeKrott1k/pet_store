@@ -1,0 +1,69 @@
+.filters {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-self: start;
+    position: sticky;
+    top: 76px;
+}
+
+.filters__title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.filters__title svg { width: 18px; height: 18px; color: var(--text-light); }
+
+.filters__group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filters__label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.filters__price-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filters__price-row .form-input {
+    padding: 9px 12px;
+    font-size: 0.875rem;
+}
+
+.filters__price-sep {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.filters__reset {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--orange);
+    font-family: var(--font);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.15s;
+}
+.filters__reset:hover { opacity: 0.75; }
+.filters__reset svg { width: 16px; height: 16px; }

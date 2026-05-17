@@ -1,0 +1,12 @@
+.promotions-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.promotions-count {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-weight: 500;
+}

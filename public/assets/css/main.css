@@ -1,0 +1,139 @@
+@import "./components/_button.css";
+@import "./components/_card.css";
+@import "./components/_filters.css";
+@import "./components/_footer.css";
+@import "./components/_form.css";
+@import "./components/_header.css";
+
+@import "./pages/_about.css";
+@import "./pages/_main.css";
+@import "./pages/_admin.css";
+@import "./pages/_auth.css";
+@import "./pages/_brands.css";
+@import "./pages/_cart.css";
+@import "./pages/_catalog.css";
+@import "./pages/_checkout.css";
+@import "./pages/_contacts.css";
+@import "./pages/_new-products.css";
+@import "./pages/_orders.css";
+@import "./pages/_product.css";
+@import "./pages/_profile.css";
+@import "./pages/_promotions.css";
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg:           #F0EDE6;
+    --green:        #2B5235;
+    --green-mid:    #3D6B50;
+    --green-light:  #E8F1EC;
+    --orange:       #C9614A;
+    --orange-light: #F5E8E5;
+    --white:        #FFFFFF;
+    --text:         #1E1E1E;
+    --text-light:   #6B7280;
+    --border:       #D8D5CE;
+    --shadow:       0 2px 16px rgba(0, 0, 0, 0.08);
+    --radius:       12px;
+    --radius-sm:    8px;
+    --radius-lg:    20px;
+    --font:         'Nunito', sans-serif;
+    --container:    1200px;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#root {
+    flex: 1;
+    padding-bottom: 64px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+input, button, textarea, select {
+    font-family: var(--font);
+    font-size: 1rem;
+}
+
+.container {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.section {
+    padding: 64px 0;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--green);
+    margin-bottom: 32px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.badge--new      { background: var(--green-light); color: var(--green); }
+.badge--hit      { background: #E8F1EC; color: var(--green); }
+.badge--sale     { background: var(--orange-light); color: var(--orange); }
+
+.page-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--green);
+}
+
+.page-header {
+    padding: 48px 0 32px;
+}
+
+.star-filled { color: var(--orange); }
+.star-empty  { color: #D4D4D4; }
+
+.stars {
+    display: flex;
+    gap: 2px;
+}
+
+.stars svg {
+    width: 18px;
+    height: 18px;
+}

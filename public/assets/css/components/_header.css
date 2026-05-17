@@ -1,0 +1,81 @@
+.header {
+    background: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+}
+
+.header__inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.header__logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--green);
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+}
+
+.header__nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 1;
+}
+
+.header__nav a {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text);
+    transition: color 0.15s;
+    white-space: nowrap;
+}
+.header__nav a:hover,
+.header__nav a.active { color: var(--green); }
+
+.header__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.header__icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    border-radius: 50%;
+    transition: background 0.15s, color 0.15s;
+    position: relative;
+}
+.header__icon:hover { background: var(--green-light); color: var(--green); }
+
+.header__icon svg { width: 20px; height: 20px; }
+
+.header__cart-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: var(--orange);
+    color: var(--white);
+    font-size: 0.65rem;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+}
