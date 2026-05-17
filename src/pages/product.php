@@ -24,9 +24,9 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 <div>на складе: <?= $product["stock"] ?>шт</div>
 <div>
     в корзине:
-    <span id="in_cart"><?= $product["quantity"] ?? 0 ?></span>
+    <span id="in_cart_<?= $product["id"] ?>"><?= $product["quantity"] ?? 0 ?></span>
 </div>
-<button data-product-id="<?= $product["id"] ?>" onclick="AddToCart(this)">В корзину</button>
+<button data-product-id="<?= $product["id"] ?>" onclick="addToCart(this)">В корзину</button>
 
 <h2>Отзывы</h2>
 <?php if (empty($reviews)): ?>
@@ -56,37 +56,5 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 <? endif ?>
 
 <script>
-    async function AddToCart(button) {
-        let formdata = new FormData();
-        const counter = document.getElementById('in_cart');
-        formdata.append("product_id", button.getAttribute("data-product-id"));
-        button.disabled = true;
-
-        // let oldValue = +counter.textContent
-        // counter.textContent = oldValue + 1;
-        try {
-            result = await fetch("/src/actions/product/add_to_cart.php", {
-                method: "POST",
-                body: formdata,
-            })
-            let data = await result.json();
-            
-            if (data.redirect) {
-                window.location.href = data.redirect;
-                return;
-            }
-            
-            
-            if (data.success != true) {
-                // counter.textContent = oldValue;
-                throw new Error(`Ошибка сервера: ${res.status}`);
-            }
-            
-            counter.textContent = +counter.textContent + 1;
-
-        } catch (error) {
-            console.log(error);
-        }
-        button.disabled = false;
-    }
+    
 </script>

@@ -84,6 +84,9 @@ $page_content = ob_get_clean();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?></title>
     <link rel="stylesheet" href="/public/assets/css/main.css">
+    <script src="/public/assets/js/add-to-cart.js"defer></script>
+    <script src="/public/assets/js/delete-from-cart.js"defer></script>
+    <script src="/public/assets/js/animate-value.js"defer></script>
 </head>
 
 <body>
@@ -96,6 +99,7 @@ $page_content = ob_get_clean();
     <?php if ($show_footer == true): ?>
         <?php require_once __DIR__ . "/../" . "src/components/footer.php" ?>
     <?php endif ?>
+    
 </body>
 
 </html>

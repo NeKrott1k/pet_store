@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$stmt = $connect->prepare("SELECT * FROM cart_items WHERE product_id = ?");
+$stmt = $connect->prepare("SELECT ci.*, p.price FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE product_id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $cart_item = $stmt->get_result()->fetch_assoc();
@@ -29,6 +29,5 @@ if (empty($cart_item)) {
     $stmt->bind_param("iii",$quantity, $_SESSION['user_id'], $product_id);
     $stmt->execute();
 }
-
-echo json_encode(['success' => true, "product_id" => $cart_item]);
+echo json_encode(['success' => true, "product_price" => $cart_item["price"]]);
 exit;
