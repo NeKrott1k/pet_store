@@ -3,15 +3,19 @@ async function deleteFromCart(button, in_cart = false) {
         const counter = document.getElementById('in_cart_' + button.getAttribute("data-product-id"))
         const card = document.getElementById('card_product_' + button.getAttribute("data-product-id"))
         const product_sum = document.getElementById('product_sum_' + button.getAttribute("data-product-id"))
+        const checkbox = document.querySelector(`[data-product-id="${button.getAttribute('data-product-id')}"]`)
+
         formdata.append("product_id", button.getAttribute("data-product-id"));
         button.disabled = true;
+
+        let data = null
 
         try {
             result = await fetch("/src/actions/product/delete-from-cart.php", {
                 method: "POST",
                 body: formdata,
             })
-            let data = await result.json();
+            data = await result.json();
             
             if (data.redirect) {
                 window.location.href = data.redirect;
@@ -25,8 +29,6 @@ async function deleteFromCart(button, in_cart = false) {
             }
             
             counter.textContent = counter.textContent - 1;
-
-            console.log(button.disabled);
             
             if(in_cart && data.status == "deleted"){
                 card.remove()
@@ -35,7 +37,9 @@ async function deleteFromCart(button, in_cart = false) {
 
                 if(in_cart){
                     animateValue(product_sum, product_sum.textContent, +product_sum.textContent - data.product_price, 400);
-                    animateValue(total_amount, total_amount.textContent, +total_amount.textContent - data.product_price, 400);
+                    if(checkbox.checked){
+                        animateValue(total_amount, total_amount.textContent, +total_amount.textContent - data.product_price, 400);
+                    }
                 }
             }
 
@@ -43,4 +47,5 @@ async function deleteFromCart(button, in_cart = false) {
             console.log(error);
         }
         button.disabled = false;
+        return data
     }

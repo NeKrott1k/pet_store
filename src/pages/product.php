@@ -1,5 +1,5 @@
 <?php
-
+//получение товаров
 $stmt = $connect->prepare("SELECT p.*, ci.quantity FROM products p LEFT JOIN cart_items ci ON ci.product_id = p.id AND ci.user_id = ? WHERE p.id = ?");
 $stmt->bind_param("ii", $_SESSION["user_id"], $_GET["id"]);
 $stmt->execute();
@@ -11,24 +11,86 @@ if (!$product) {
     exit;
 }
 
+//получение товара из заказа
+$stmt = $connect->prepare("SELECT oi.id FROM order_items oi JOIN orders o ON oi.order_id = o.id WHERE o.user_id = ? AND oi.product_id = ?");
+$stmt->bind_param("ii", $_SESSION["user_id"], $_GET["id"]);
+$stmt->execute();
+$order_items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+//получение отзывов
 $stmt = $connect->prepare("SELECT r.id, u.img, u.name AS user_name, r.comment, r.created_at, r.assessment FROM reviews r JOIN users u ON r.user_id = u.id WHERE product_id = ?");
 $stmt->bind_param("i", $product["id"]);
 $stmt->execute();
 $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $comment = trim($_POST["comment"]);
+    $assessment = $_POST["assessment"];
+
+
+    $error = [];
+
+    if (empty($comment)) {
+        $error["comment"] = "Заполните поле";
+    }
+    if (!empty($error)) {
+        $_SESSION["error"] = $error;
+        $_SESSION["old_input"] = [
+            "comment" => $comment,
+            "assessment" => $assessment
+        ];
+        header("Location: /product/{$_GET["id"]}");
+        exit;
+    }
+
+    $stmt = $connect->prepare("INSERT INTO reviews (user_id, product_id, comment, assessment) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("iisi", $_SESSION["user_id"], $_GET["id"], $comment, $assessment);
+    $stmt->execute();
+    header("Location: /product/{$_GET["id"]}");
+}
+
+
+$input_error = $_SESSION["error"] ?? [];
+$old_input = $_SESSION["old_input"] ?? [];
+
+unset($_SESSION["error"]);
+unset($_SESSION["old_input"]);
 ?>
 <img style="height: 200px;" src="<?= $product["img"] ?>" alt="img">
 <div><?= $product["name"] ?></div>
 <div><?= $product["description"] ?></div>
 <div><?= $product["price"] ?>руб</div>
 <div>на складе: <?= $product["stock"] ?>шт</div>
-<div>
-    в корзине:
-    <span id="in_cart_<?= $product["id"] ?>"><?= $product["quantity"] ?? 0 ?></span>
+<div class="control" style="<?= $product["quantity"] == 0 ? "display:none" : '' ?>">
+    <button data-product-id="<?= $product["id"] ?>" onclick="addToCart(this)">+</button>
+    <div><span id="in_cart_<?= $product["id"] ?>"><?= $product["quantity"] ?></span> шт.</div>
+    <button data-product-id="<?= $product["id"] ?>" onclick="removeFromCart(this)">-</button>
 </div>
-<button data-product-id="<?= $product["id"] ?>" onclick="addToCart(this)">В корзину</button>
+<button style="<?= $product["quantity"] != 0 ? "display:none" : '' ?>" class="add_to_cart_btn" data-product-id="<?= $product["id"] ?>" onclick="addToCartFromProduct(this)">В корзину</button>
 
 <h2>Отзывы</h2>
+<?php if (!empty($order_items)): ?>
+    <form action="" method="POST">
+        <textarea type="text" name="comment"><?= htmlspecialchars($old_input["comment"] ?? "") ?></textarea>
+        <?php if (isset($input_error["comment"])): ?>
+            <div style="color: red;"><?= $input_error["comment"] ?></div>
+        <?php endif ?>
+
+
+        <select name="assessment" id="">
+            <option value="1" <?= ($old_input["assessment"] ?? 0) == 1 ? "selected" : '' ?>>1</option>
+            <option value="2" <?= ($old_input["assessment"] ?? 0) == 2 ? "selected" : '' ?>>2</option>
+            <option value="3" <?= ($old_input["assessment"] ?? 0) == 3 ? "selected" : '' ?>>3</option>
+            <option value="4" <?= ($old_input["assessment"] ?? 0) == 4 ? "selected" : '' ?>>4</option>
+            <option value="5" <?= ($old_input["assessment"] ?? 0) == 5 ? "selected" : '' ?>>5</option>
+        </select>
+        <?php if (isset($input_error["assessment"])): ?>
+            <div style="color: red;"><?= $input_error["assessment"] ?></div>
+        <?php endif ?>
+        <button type="submit">Создать</button>
+    </form>
+<?php endif ?>
 <?php if (empty($reviews)): ?>
     <div>Нет отзывов</div>
 <?php else: ?>
@@ -56,5 +118,22 @@ $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 <? endif ?>
 
 <script>
-    
+
+    async function removeFromCart(button) {
+        let res = await deleteFromCart(button)
+        
+        if(res.status == "deleted"){
+            const control = document.querySelector(".control")
+            const add_to_cart_btn = document.querySelector(".add_to_cart_btn")
+            control.style.display = "none"
+            add_to_cart_btn.style.display = "block"
+        }
+    }
+    async function addToCartFromProduct(button){
+        let res = await addToCart(button)
+        
+        const control = document.querySelector(".control")
+        control.style.display = "block"
+        button.style.display = "none"
+    }
 </script>

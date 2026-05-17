@@ -23,6 +23,7 @@ $entity_map = [
 //статические пути
 $routes = [
     ''       => ['file' => 'src/pages/catalog.php', 'title' => 'Главная', 'show_footer' => true, 'roles' => []],
+    'checkout'       => ['file' => 'src/pages/checkout.php', 'title' => 'Главная', 'show_footer' => true, 'roles' => []],
     'cart'   => ['file' => 'src/pages/cart.php', 'title' => 'Корзина', 'show_footer' => true, 'roles' => ['user', 'admin', 'manager']],
     'admin'  => ['file' => 'src/pages/admin/index.php', 'title' => 'Админка', 'roles' => ['admin']],
     'orders' => ['file' => 'src/pages/orders.php', 'title' => 'Заказы', 'roles' => ['admin', 'manager']],

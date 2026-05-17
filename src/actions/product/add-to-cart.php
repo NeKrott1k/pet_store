@@ -11,23 +11,40 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$stmt = $connect->prepare("SELECT ci.*, p.price FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE product_id = ?");
+$stmt = $connect->prepare("SELECT stock FROM products  WHERE id = ?");
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$product = $stmt->get_result()->fetch_assoc();
+
+
+$stmt = $connect->prepare("SELECT ci.*, p.price, p.stock FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE product_id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $cart_item = $stmt->get_result()->fetch_assoc();
 
 $quantity = $cart_item['quantity'] ?? 0;
 
+if ($quantity == $product['stock']) {
+    echo json_encode(['success' => false, 'error' => 'stock_limit', "available" => $cart_item['stock']]);
+    exit;
+}   
+
 if (empty($cart_item)) {
     $quantity = 1;
     $stmt = $connect->prepare("INSERT INTO cart_items SET user_id = ?, product_id = ?, quantity  = ?");
     $stmt->bind_param("iii", $_SESSION['user_id'], $product_id, $quantity);
     $stmt->execute();
+    echo json_encode(['success' => true, "status" => "created"]);
+    exit;
 } else {
     $quantity = $cart_item['quantity'] + 1;
+    if ($quantity == $cart_item['stock']) {
+        $quantity = $cart_item['stock'];
+    }
     $stmt = $connect->prepare("UPDATE cart_items SET quantity = ? WHERE user_id = ? AND product_id = ?");
-    $stmt->bind_param("iii",$quantity, $_SESSION['user_id'], $product_id);
+    $stmt->bind_param("iii", $quantity, $_SESSION['user_id'], $product_id);
     $stmt->execute();
 }
+
 echo json_encode(['success' => true, "product_price" => $cart_item["price"]]);
 exit;
