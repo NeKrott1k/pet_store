@@ -60,7 +60,13 @@ unset($_SESSION["old_input"]);
 <img style="height: 200px;" src="<?= $product["img"] ?>" alt="img">
 <div><?= $product["name"] ?></div>
 <div><?= $product["description"] ?></div>
-<div><?= $product["price"] ?>руб</div>
+<?php if (empty($product["discount_percent"])): ?>
+    <div><?= $product["price"] ?> ₽</div>
+<?php else: ?>
+    <div><?= $product["price"] * (1 - $product["discount_percent"] / 100) ?> ₽</div>
+    <div><s><?= $product["price"]?></s> ₽</div>
+<?php endif ?>
+
 <div>на складе: <?= $product["stock"] ?>шт</div>
 <div class="control" style="<?= $product["quantity"] == 0 ? "display:none" : '' ?>">
     <button data-product-id="<?= $product["id"] ?>" onclick="addToCart(this)">+</button>
@@ -118,20 +124,22 @@ unset($_SESSION["old_input"]);
 <? endif ?>
 
 <script>
-
     async function removeFromCart(button) {
         let res = await deleteFromCart(button)
-        
-        if(res.status == "deleted"){
+
+        if (res.status == "deleted") {
             const control = document.querySelector(".control")
             const add_to_cart_btn = document.querySelector(".add_to_cart_btn")
             control.style.display = "none"
             add_to_cart_btn.style.display = "block"
         }
     }
-    async function addToCartFromProduct(button){
+    async function addToCartFromProduct(button) {
         let res = await addToCart(button)
         
+        if(!res.success){
+            return
+        }
         const control = document.querySelector(".control")
         control.style.display = "block"
         button.style.display = "none"

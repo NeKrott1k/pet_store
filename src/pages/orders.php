@@ -24,7 +24,7 @@ if (empty($orders)):
 <? else: ?>
     <?php foreach ($orders as $order):
         $stmt = $connect->prepare("
-            SELECT oi.product_id, oi.quantity, p.price, p.name, p.img
+            SELECT oi.*, p.price, p.name, p.img, p.discount_percent
             FROM order_items oi
             JOIN products p ON oi.product_id = p.id
             WHERE oi.order_id = ?
@@ -36,6 +36,7 @@ if (empty($orders)):
         <div style="margin-bottom: 20px;">
             <div>Заказ №<?= $order['id'] ?></div>
             <div>статус <?= $order['status'] ?></div>
+            <div>сумма заказа <?= $order['total_amount'] ?></div>
             <div>
                 Товары
                 <?php foreach ($products as $product):
@@ -43,7 +44,12 @@ if (empty($orders)):
                     <div>
                         <img style="height: 50px;" src="<?= $product["img"] ?>" alt="">
                         <p><?= $product["name"] ?></p>
-                        <p><span><?= $product["price"] * $product["quantity"] ?></span> ₽</p>
+                        <?php if (empty($product["discount_percent"])): ?>
+                            <div><?= $product["price_at_order"] * $product["quantity"] ?> ₽</div>
+                        <?php else: ?>
+                            <div><?= $product["discount_price_at_order"] * $product["quantity"]?> ₽</div>
+                            <div><s><?= $product["price_at_order"] * $product["quantity"] ?></s> ₽</div>
+                        <?php endif ?>
                         <div>
                             <div><span><?= $product["quantity"] ?></span> шт.</div>
                         </div>
